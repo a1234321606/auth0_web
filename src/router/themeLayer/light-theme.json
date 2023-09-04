@@ -1,0 +1,125 @@
+{
+  "components": {
+    "MuiInputLabel": {
+      "styleOverrides": {
+        "root": {
+          "color": "#00884e"
+        }
+      },
+      "defaultProps": {
+        "size": "small"
+      }
+    },
+    "MuiInputBase": {
+      "styleOverrides": {
+        "root": {
+          "&.Mui-focused fieldset": {
+            "borderColor": "#e09e50"
+          },
+          "&:hover fieldset": {
+            "borderColor": "#e09e50 !important"
+          },
+          "& fieldset": {
+            "borderColor": "#8cbdb9"
+          },
+          "backgroundColor": "#e8eceb"
+        }
+      },
+      "defaultProps": {
+        "size": "small"
+      }
+    },
+    "MuiButton": {
+      "styleOverrides": {
+        "root": {
+          "textTransform": "none"
+        }
+      }
+    },
+    "MuiAppBar": {
+      "styleOverrides": {
+        "colorPrimary": {
+          "backgroundColor": "#2d3e4e"
+        }
+      }
+    },
+    "MuiIconButton": {
+      "styleOverrides": {
+        "root": {
+          "padding": 0
+        }
+      }
+    },
+    "MuiMenu": {
+      "styleOverrides": {
+        "root": {
+          "& .MuiMenuItem-root:hover": {
+            "backgroundColor": "#e09e50",
+            "color": "#fff"
+          }
+        }
+      }
+    },
+    "MuiTableRow": {
+      "styleOverrides": {
+        "root": {
+          "&.MuiTableRow-hover:hover": {
+            "backgroundColor": "#8cbdb9"
+          }
+        }
+      }
+    },
+    "MuiDataGrid": {
+      "styleOverrides": {
+        "root": {
+          "border": "none",
+          "& .MuiDataGrid-main": {
+                "boxShadow": "0px 0px 10px rgba(0, 0, 0, 0.1)"
+          },
+          "& .MuiDataGrid-virtualScroller": {
+            "flex": 1
+          },
+          "& .MuiDataGrid-columnHeaders": {
+            "backgroundColor": "#2d3e4e",
+            "color": "#fff",
+            "& button": {
+              "color": "#fff"
+            }
+          },
+          "& .MuiDataGrid-columnHeaderTitle": {
+            "fontWeight": "bold"
+          },
+          "& .MuiDataGrid-row": {
+            "borderBottom": "1px solid #8cbdb9",
+            "&:not(.Mui-selected):hover": {
+              "backgroundColor": "#e09e50",
+              "color": "#fff"
+            }
+          },
+          "& .MuiDataGrid-virtualScrollerContent": {
+            "height": "initial !important"
+          },
+          "& .MuiDataGrid-virtualScrollerRenderZone": {
+            "position": "relative"
+          }
+        }
+      }
+    }
+  },
+  "palette": {
+    "primary": {
+      "main": "#e09e50",
+      "dark": "#ca853e",
+      "contrastText": "#fff"
+    },
+    "secondary": {
+      "main": "#8cbdb9",
+      "dark": "#729b97",
+      "contrastText": "#fff"
+    },
+    "text": {
+      "primary": "#2d3e4e",
+      "secondary": "#e8eceb"
+    }
+  }
+}
