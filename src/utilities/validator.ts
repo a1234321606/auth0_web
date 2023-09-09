@@ -3,30 +3,23 @@
  * @param {*} str - (String) the string to be verified
  * @returns Boolean
  */
-const isInteger = (str: string) => {
-  try {
-    if (str) return Number.isInteger(Number(str));
-  } catch (error) {
-    console.error(error);
-  }
-  return false;
-};
+const isInteger = (str: string) => (str ? Number.isInteger(Number(str)) : false);
 
 /**
  * Check the string is number or not
  * @param {*} str - (String) the string to be verified
  * @returns Boolean
  */
-const isNumber = (str: string) => !Number.isNaN(str);
+const isNumber = (str: string) => (str ? !Number.isNaN(Number(str)) : false);
 
 /**
- * Check the parameter is object or not
+ * Check the parameter is empty object or not
  * @param {*} obj - (object) the object to be verified
  * @returns Boolean
  */
 function isEmptyObj(obj: any) {
   try {
-    return Object.keys(obj).length === 0;
+    return obj.constructor === Object && Object.keys(obj).length === 0;
   } catch (error) {
     return false;
   }
@@ -63,44 +56,48 @@ const isLongitude = (str: string) => {
 };
 
 /**
- * Check the string is MAC address or not
+ * Check the string is MAC address or not.
+ * Allow XX-XX-XX-XX-XX-XX or XX:XX:XX:XX:XX:XX
  * @param {*} str - (String) the string to be verified
  * @returns Boolean
  */
-const isMacAddress = (str: string) => /^([a-fA-F\d]{2}:){5}[a-fA-F\d]{2}$/.test(str);
+const isMacAddress = (str: string) => /^(([0-9A-Fa-f]{2}:){5}|([0-9A-Fa-f]{2}-){5})([0-9A-Fa-f]{2})$/.test(str);
 
 /**
  * Check the string is email or not
  * @param {*} str - (String) the string to be verified
  * @returns Boolean
  */
-const isEmail = (str: string) => /\S+@\S+\.\S+/.test(str);
-
-/**
- * Check the string is phone number or not
- * @param {*} str - (String) the string to be verified
- * @returns Boolean
- */
-const isPhoneNumber = (str: string) => /^(\+?\d{1,3})?[ -]?\d{3,}[- ]?\d{4,}$/.test(str);
+// eslint-disable-next-line no-useless-escape
+const isEmail = (str: string) => /^[\w.+-]+@([a-zA-Z\d-]+\.)+[a-zA-Z\d-]{2,4}$/.test(str);
 
 /**
  * Check the string is alphabetic or not
  * @param {*} str - (String) the string to be verified
  * @returns Boolean
  */
-const isAlphabetic = (str: string) => !/[0-9!@#$%^&*()_+{}\\[\]:;<>,.?~\\/-]/.test(str);
+// eslint-disable-next-line no-useless-escape
+const isAlphabetic = (str: string) => !/[\d`~!@#$%^&*()\-_=+[\]{}\\|;:'"<>,.?\/]/.test(str);
 
 /**
- * Check the string is a valid password
- * • contains at least one lower character
- * • contains at least one upper character
- * • contains at least one digit character
- * • contains at least one special character
- * • contains at least 8 characters
+ * Check the string is valid password or not. Password must contain:
+ * • At least 8 characters
+ * • At least 3 of the following:
+ *   • Lower case letters (a-z)
+ *   • Upper case letters (A-Z)
+ *   • Numbers (0-9)
+ *   • Special characters (e.g. !@#$%^&*`~)
  * @param {*} str - (String) the string to be verified
  * @returns Boolean
  */
-const isPasswordValid = (str: string) => /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(str);
+const isPasswordValid = (str: string) => {
+  const isLengthValid = str.length > 7;
+  const isLowerCase = /[a-z]/.test(str);
+  const isUpperCase = /[A-Z]/.test(str);
+  const isDigit = /\d/.test(str);
+  const isSpecialChar = /[!@#$%^&*()_+\-=\\[\]{};':"\\|,.<>\\/?`~]+/.test(str);
+  return isLengthValid && (+isLowerCase + +isUpperCase + +isDigit + +isSpecialChar > 2);
+};
 
 export default {
   isInteger,
@@ -110,7 +107,6 @@ export default {
   isLongitude,
   isMacAddress,
   isEmail,
-  isPhoneNumber,
   isAlphabetic,
   isPasswordValid,
 };

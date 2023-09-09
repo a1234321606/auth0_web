@@ -51,7 +51,7 @@ export default () => {
     if (Object.keys(userErrors).length || !Object.keys(d).length) return;
 
     try {
-      // await axios.put('users', d);
+      await axios.put('users', d);
       if (d.name) dispatch(authActions.setUsername(d.name || userData.name));
       notification.open({
         severity: 'success',
@@ -70,20 +70,25 @@ export default () => {
     setUserData({ ...userData, [e.target.name]: e.target.value });
 
     const errors = { ...userErrors };
+    const field = formatMessage({ id: `user_${e.target.name}` });
     if (e.target.required && !e.target.value) {
-      errors[e.target.name] = formatMessage({ id: 'validate_required' }, { field: e.target.name });
-    } else if (e.target.name === 'email' && !validator.isEmail(e.target.value)) {
-      errors[e.target.name] = formatMessage({ id: 'validate_invalid' }, { field: e.target.name });
+      errors[e.target.name] = formatMessage({ id: 'validate_required' }, { field });
+    } else if (e.target.name === 'given_name' && !validator.isAlphabetic(e.target.value)) {
+      errors[e.target.name] = formatMessage({ id: 'validate_alphabetic' }, { field });
+    } else if (e.target.name === 'family_name' && !validator.isAlphabetic(e.target.value)) {
+      errors[e.target.name] = formatMessage({ id: 'validate_alphabetic' }, { field });
     } else delete errors[e.target.name];
     setUserErrors(errors);
   };
 
   const onEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmailData(e.target.value);
+
+    const field = formatMessage({ id: `user_${e.target.name}` });
     if (e.target.required && !e.target.value) {
-      setEmailError(formatMessage({ id: 'validate_required' }, { field: e.target.name }));
+      setEmailError(formatMessage({ id: 'validate_required' }, { field }));
     } else if (!validator.isEmail(e.target.value)) {
-      setEmailError(formatMessage({ id: 'validate_invalid' }, { field: e.target.name }));
+      setEmailError(formatMessage({ id: 'validate_invalid' }, { field }));
     } else setEmailError(undefined);
   };
 
@@ -94,8 +99,9 @@ export default () => {
     setPasswordata(data);
 
     const errors = { ...passwordErrors };
+    const field = formatMessage({ id: `user_profile_${e.target.name}` });
     if (e.target.getAttribute('data-valid') === 'false') {
-      errors[e.target.name] = formatMessage({ id: 'validate_invalid' }, { field: e.target.name });
+      errors[e.target.name] = formatMessage({ id: 'validate_invalid' }, { field });
     } else if (e.target.name === 'new_password' || e.target.name === 'confirm_password') {
       const name = e.target.name === 'new_password' ? 'confirm_password' : 'new_password';
       if (e.target.value && passwordData[name] && e.target.value !== passwordData[name]) {
@@ -203,6 +209,8 @@ export default () => {
                 label={formatMessage({ id: 'user_given_name' })}
                 name="given_name"
                 value={userData.given_name || ''}
+                error={!!userErrors.given_name}
+                helperText={userErrors.given_name}
                 disabled={isSocial}
                 onChange={onInputChange}
               />
@@ -210,6 +218,8 @@ export default () => {
                 label={formatMessage({ id: 'user_family_name' })}
                 name="family_name"
                 value={userData.family_name || ''}
+                error={!!userErrors.family_name}
+                helperText={userErrors.family_name}
                 disabled={isSocial}
                 onChange={onInputChange}
               />
@@ -233,21 +243,21 @@ export default () => {
             </div>
             <Divider style={{ gridColumn: '1 / -1' }} />
             <PasswordInput
-              label={formatMessage({ id: 'user_profile_new_pwd' })}
+              label={formatMessage({ id: 'user_profile_new_password' })}
               name="new_password"
               disabled={isSocial}
               helperText={passwordErrors.new_password}
               onChange={onPasswordChange}
             />
             <PasswordInput
-              label={formatMessage({ id: 'user_profile_confirm_pwd' })}
+              label={formatMessage({ id: 'user_profile_confirm_password' })}
               name="confirm_password"
               disabled={isSocial}
               helperText={passwordErrors.confirm_password}
               onChange={onPasswordChange}
             />
             <PasswordInput
-              label={formatMessage({ id: 'user_profile_old_pwd' })}
+              label={formatMessage({ id: 'user_profile_old_password' })}
               name="old_password"
               disabled={isSocial}
               helperText={passwordErrors.old_password}

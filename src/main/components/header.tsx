@@ -28,8 +28,9 @@ export default ({ menuConfig }: IProps) => {
 
   const onAvatarClose = (item: string) => {
     setAnchorElUser(null);
-    if (item === formatMessage({ id: 'menu_profile' })) setTimeout(() => navigate('/profile'));
+    if (item === formatMessage({ id: 'menu_profile' })) setTimeout(() => navigate('/profile'), 100);
     else if (item === formatMessage({ id: 'menu_logout' })) logout({ logoutParams: { returnTo: window.location.origin } });
+    setTimeout(() => setAnchorElUser(null), 1000); // Fix unexptected menu close failed only happens on Render
   };
 
   useEffect(() => {

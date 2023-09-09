@@ -18,6 +18,7 @@ const common = {
   validate_required: '{field} is required',
   validate_invalid: '{field} is invalid',
   validate_not_match: 'Passwords do not match',
+  validate_alphabetic: '{field} should not contain number or special character',
 };
 
 const login = {
@@ -57,9 +58,9 @@ const profile = {
   delete_account_content2: 'Are you sure you want to delete your account permanently?',
   delete_account_fail: 'Delete account failed',
   user_profile: 'User Profile',
-  user_profile_old_pwd: 'Old Password',
-  user_profile_new_pwd: 'New Password',
-  user_profile_confirm_pwd: 'Re-Enter New Password',
+  user_profile_old_password: 'Old Password',
+  user_profile_new_password: 'New Password',
+  user_profile_confirm_password: 'Re-Enter New Password',
 };
 
 export default {

@@ -18,6 +18,7 @@ const common = {
   validate_required: '{field} 為必填',
   validate_invalid: '無效的 {field}',
   validate_not_match: '兩次密碼不相同',
+  validate_alphabetic: '{field} 應不包含數字或特殊字元',
 };
 
 const login = {
@@ -57,9 +58,9 @@ const profile = {
   delete_account_content2: '您確定要永久刪除您的帳號嗎?',
   delete_account_fail: '刪除帳號失敗',
   user_profile: '使用者資料',
-  user_profile_old_pwd: '舊密碼',
-  user_profile_new_pwd: '新密碼',
-  user_profile_confirm_pwd: '重新輸入新密碼',
+  user_profile_old_password: '舊密碼',
+  user_profile_new_password: '新密碼',
+  user_profile_confirm_password: '重新輸入新密碼',
 };
 
 export default {
