@@ -27,6 +27,9 @@ const login = {
   sign_up: '註冊',
   copyright: '© 2023 K-H Li 版權所有',
   welcome: '歡迎',
+  email_verification: '電子信箱驗證',
+  email_verification_para1: '我們已寄電子信箱驗證信至{ field }，請點擊連結完成驗證。',
+  email_verification_para2: '若您不小心輸入錯誤的電子信箱，可輸入新的並重新發送驗證信。',
 };
 
 const user = {

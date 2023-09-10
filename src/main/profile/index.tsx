@@ -115,7 +115,7 @@ export default () => {
   };
 
   const changeEmail = async () => {
-    if (!emailData || emailData === userProfile.email) return;
+    if (!emailData || emailData === userProfile.email || emailError) return;
     try {
       await axios.put('users', { email: emailData });
       await axios.post('users/verify-email');

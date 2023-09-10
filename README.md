@@ -38,7 +38,17 @@ Here's a quick overview of the web app. You can also access the frontend service
 
 Please be aware that our service is deployed on Render, which comes with a [limitation](https://render.com/docs/free#free-web-services). It may spin down the service after 15 minutes of inactivity, and it resumes service within a few seconds when a request is made. This might result in a latency for incoming requests.
 
-![demo](docs/demo.gif)
+#### ↓ Sign Up
+![demo_signup.gif](docs/demo_signup.gif)
+
+#### ↓ User Dashboard
+![demo_dashboard.gif](docs/demo_dashboard.gif)
+
+#### ↓ User Profile/Change Password
+![demo_profile_&_pwd.gif](docs/demo_profile_&_pwd.gif)
+
+#### ↓ Change Email/Delete Account
+![demo_email_&_delete.gif](docs/demo_email_&_delete.gif)
 
 # How to Use
 * Auth0
