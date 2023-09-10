@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useIntl } from 'react-intl';
 import {
   Card, CardContent, TextField, Button,
 } from '@mui/material';
@@ -9,12 +10,13 @@ import { Container } from './components';
 
 const EmailVerificationPage = () => {
   const { unverifiedEmail, auth0: { user } } = useAppSelector((state) => state.authReducer);
-  const [prevEmail, setPrevEmail] = useState<string>(user.email);
-  const [email, setEmail] = useState<string>(user.email);
+  const [prevEmail, setPrevEmail] = useState<string>(user?.email);
+  const [email, setEmail] = useState<string>(user?.email);
   const [disabled, setDisabled] = useState<boolean>(false);
   const [seconds, setSeconds] = useState<number>(0);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const { formatMessage } = useIntl();
   let timer: NodeJS.Timeout;
 
   const checkEmailVerified = async () => {
@@ -72,14 +74,9 @@ const EmailVerificationPage = () => {
     <Container>
       <Card sx={{ minWidth: 800 }}>
         <CardContent>
-          <h1>Email Verification</h1>
-          <p>
-            We&apos;ve sent an email to&nbsp;
-            <strong>{email}</strong>
-            .&nbsp;
-            Please click on the link to complete the verification process.
-          </p>
-          <p>In case you may enter incorrect email, You could re-enter a new one and try again</p>
+          <h1>{formatMessage({ id: 'email_verification' })}</h1>
+          <p>{formatMessage({ id: 'email_verification_para1' }, { field: <strong>{email}</strong> })}</p>
+          <p>{formatMessage({ id: 'email_verification_para2' })}</p>
           <TextField style={{ width: '50%', marginRight: '20px' }} disabled={disabled} label="Email" value={email} onChange={onEmailChange} />
           <Button variant="contained" disabled={disabled} onClick={onResend}>
             {disabled ? `Resend in ${seconds} seconds` : 'Resend'}

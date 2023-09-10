@@ -27,6 +27,9 @@ const login = {
   sign_up: 'Sign Up',
   copyright: '© 2023 K-H Li. All rights reserved.',
   welcome: 'Welcome',
+  email_verification: 'Email Verification',
+  email_verification_para1: 'We\'ve sent an email to { field }. Please click on the link to complete the verification process.',
+  email_verification_para2: 'In case you may enter incorrect email, You could re-enter a new one and try again.',
 };
 
 const user = {
