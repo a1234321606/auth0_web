@@ -17,12 +17,15 @@ const Container = styled(GridContainer)`
     }
     .statistics-item-group {
       display: grid;
-      grid-template: auto / 1fr auto 1fr 1fr;
+      grid-template: auto / 1fr auto 1fr auto 1fr;
     }
     .statistics-item {
       padding: 16px;
       text-align: center;
       box-shadow: none;
+      display: grid;
+      grid-template: auto 1fr / auto;
+      height: 100px;
 
       & > div {
         padding: 0;

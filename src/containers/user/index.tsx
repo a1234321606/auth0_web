@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {
-  Card, CardContent, TextField, Divider, Tooltip,
+  Card, CardContent, TextField, Divider, Tooltip, Skeleton,
 } from '@mui/material';
 import { DateTime } from 'luxon';
 import { useIntl } from 'react-intl';
@@ -24,6 +24,8 @@ export default () => {
   const [filterData, setFilterData] = useState<IUser[]>([]);
   const [signinUsers, setSigninUsers] = useState<number>(0);
   const [avgSigninUsers, setAvgSigninUsers] = useState<number>(0);
+  const [isUserListLoading, setIsUserListLoading] = useState<boolean>(true);
+  const [isUserStatsLoading, setIsUserStatsLoading] = useState<boolean>(true);
   const { formatMessage } = useIntl();
   const columns: GridColDef[] = [
     { field: 'name', headerName: formatMessage({ id: 'user_name' }), flex: 1 },
@@ -62,12 +64,12 @@ export default () => {
     } catch (e) {
       console.error(e);
     }
+    setIsUserListLoading(false);
   };
 
   const fetchStats = async () => {
     try {
       const res = await axios.get('users/stats', {
-        types: ['s', 'ssa'],
         start_timestamp: DateTime.now().plus({ day: -6 }).startOf('day').toMillis(),
         end_timestamp: DateTime.now().endOf('day').toMillis(),
       });
@@ -78,6 +80,7 @@ export default () => {
     } catch (e) {
       console.error(e);
     }
+    setIsUserStatsLoading(false);
   };
 
   useEffect(() => {
@@ -91,27 +94,25 @@ export default () => {
         <div className="statistics-item-group">
           <Tooltip title={formatMessage({ id: 'stats_total_tooltip' })} followCursor>
             <Card className="statistics-item">
-              <CardContent>
-                <div className="title">{formatMessage({ id: 'stats_total' })}</div>
-                <div className="value">{rowData.length}</div>
-              </CardContent>
+              <div className="title">{formatMessage({ id: 'stats_total' })}</div>
+              {isUserStatsLoading ? <Skeleton variant="rounded" height="100%" />
+                : <div className="value">{rowData.length}</div>}
             </Card>
           </Tooltip>
           <Divider orientation="vertical" sx={{ borderWidth: 1 }} />
           <Tooltip title={formatMessage({ id: 'stats_today_tooltip' })} followCursor>
             <Card className="statistics-item">
-              <CardContent>
-                <div className="title">{formatMessage({ id: 'stats_today' })}</div>
-                <div className="value">{signinUsers}</div>
-              </CardContent>
+              <div className="title">{formatMessage({ id: 'stats_today' })}</div>
+              {isUserStatsLoading ? <Skeleton variant="rounded" height="100%" />
+                : <div className="value">{signinUsers}</div>}
             </Card>
           </Tooltip>
+          <Divider orientation="vertical" sx={{ borderWidth: 1 }} />
           <Tooltip title={formatMessage({ id: 'stats_7days_tooltip' })} followCursor>
             <Card className="statistics-item">
-              <CardContent>
-                <div className="title">{formatMessage({ id: 'stats_7days' })}</div>
-                <div className="value">{avgSigninUsers}</div>
-              </CardContent>
+              <div className="title">{formatMessage({ id: 'stats_7days' })}</div>
+              {isUserStatsLoading ? <Skeleton variant="rounded" height="100%" />
+                : <div className="value">{avgSigninUsers}</div>}
             </Card>
           </Tooltip>
         </div>
@@ -125,7 +126,13 @@ export default () => {
             placeholder={`${formatMessage({ id: 'search' })}...`}
             onChange={onFilterChange}
           />
-          <Table sx={{ width: 1200 }} columns={columns} rows={filterData} getRowId={(row) => row.user_id} />
+          <Table
+            sx={{ width: 1200 }}
+            columns={columns}
+            rows={filterData}
+            loading={isUserListLoading}
+            getRowId={(row) => row.user_id}
+          />
         </CardContent>
       </Card>
     </Container>
