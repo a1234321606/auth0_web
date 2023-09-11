@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import {
   DataGrid, GridColDef, DataGridProps, GridSelectedRowCount, GridPagination,
 } from '@mui/x-data-grid';
-import { IconButton } from '@mui/material';
+import { IconButton, LinearProgress } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import NoRowsOverlay from 'src/components/noData';
 
@@ -22,7 +22,7 @@ const createFooter = (selected: any[]) => (
 );
 
 export default ({
-  columns, rows, sx, checkboxSelection, getRowId,
+  columns, rows, sx, checkboxSelection, loading, getRowId,
 }: DataGridProps) => {
   const [selectedRows, setSelectedRows] = useState([]);
 
@@ -41,10 +41,12 @@ export default ({
         pageSizeOptions={[5, 10, 50, 100]}
         disableColumnMenu
         checkboxSelection={checkboxSelection}
+        loading={loading}
         onRowSelectionModelChange={checkboxSelection ? (e: any) => setSelectedRows(e) : undefined}
-        components={{
-          NoRowsOverlay,
-          Footer: () => createFooter(selectedRows),
+        slots={{
+          loadingOverlay: LinearProgress,
+          noRowsOverlay: NoRowsOverlay,
+          footer: () => createFooter(selectedRows),
         }}
       />
     </div>

@@ -36,9 +36,7 @@ api.interceptors.response.use(
           break;
       }
     }
-    if (!isAuthorized) {
-      window.location.href = '/';
-    }
+    if (!isAuthorized) window.location.reload();
     return Promise.reject(error.response || error);
   },
 );

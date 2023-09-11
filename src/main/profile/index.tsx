@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect, useState } from 'react';
 import {
-  Card, CardContent, TextField, Button, Divider,
+  Card, CardContent, TextField, Button, Divider, Skeleton,
 } from '@mui/material';
 import { useIntl } from 'react-intl';
 import { useAppSelector, useAppDispatch, authActions } from 'src/redux/store';
@@ -15,6 +16,7 @@ import { Container } from './components';
 export default () => {
   const { username, auth0: { logout, user } } = useAppSelector((state) => state.authReducer);
   const [isSocial, setIsSocial] = useState<boolean>();
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [userProfile, setUserProfile] = useState<any>({});
   const [userData, setUserData] = useState<any>({});
   const [emailData, setEmailData] = useState<string>();
@@ -41,6 +43,7 @@ export default () => {
     } catch (e) {
       console.error(e);
     }
+    setIsLoading(false);
   };
 
   const updateUser = async () => {
@@ -196,46 +199,58 @@ export default () => {
                 alt={username.split(' ').map((s: string) => s[0]).join('').toUpperCase()}
                 readOnly
               />
-              <TextField
-                label={formatMessage({ id: 'user_name' })}
-                name="name"
-                required
-                value={userData.name || ''}
-                error={!!userErrors.name}
-                helperText={userErrors.name}
-                onChange={onInputChange}
-              />
-              <TextField
-                label={formatMessage({ id: 'user_given_name' })}
-                name="given_name"
-                value={userData.given_name || ''}
-                error={!!userErrors.given_name}
-                helperText={userErrors.given_name}
-                disabled={isSocial}
-                onChange={onInputChange}
-              />
-              <TextField
-                label={formatMessage({ id: 'user_family_name' })}
-                name="family_name"
-                value={userData.family_name || ''}
-                error={!!userErrors.family_name}
-                helperText={userErrors.family_name}
-                disabled={isSocial}
-                onChange={onInputChange}
-              />
+              {isLoading ? (
+                <>
+                  <Skeleton variant="rounded" height={40} />
+                  <Skeleton variant="rounded" height={40} />
+                  <Skeleton variant="rounded" height={40} />
+                </>
+              ) : (
+                <>
+                  <TextField
+                    label={formatMessage({ id: 'user_name' })}
+                    name="name"
+                    required
+                    value={userData.name || ''}
+                    error={!!userErrors.name}
+                    helperText={userErrors.name}
+                    onChange={onInputChange}
+                  />
+                  <TextField
+                    label={formatMessage({ id: 'user_given_name' })}
+                    name="given_name"
+                    value={userData.given_name || ''}
+                    error={!!userErrors.given_name}
+                    helperText={userErrors.given_name}
+                    disabled={isSocial}
+                    onChange={onInputChange}
+                  />
+                  <TextField
+                    label={formatMessage({ id: 'user_family_name' })}
+                    name="family_name"
+                    value={userData.family_name || ''}
+                    error={!!userErrors.family_name}
+                    helperText={userErrors.family_name}
+                    disabled={isSocial}
+                    onChange={onInputChange}
+                  />
+                </>
+              )}
               <div><Button variant="contained" onClick={updateUser}>{formatMessage({ id: 'save' })}</Button></div>
             </div>
             <Divider style={{ gridColumn: '1 / -1' }} />
-            <TextField
-              label={formatMessage({ id: 'user_email' })}
-              name="email"
-              required
-              disabled={isSocial}
-              value={emailData || ''}
-              error={!!emailError}
-              helperText={emailError}
-              onChange={onEmailChange}
-            />
+            {isLoading ? <Skeleton variant="rounded" height={40} /> : (
+              <TextField
+                label={formatMessage({ id: 'user_email' })}
+                name="email"
+                required
+                disabled={isSocial}
+                value={emailData || ''}
+                error={!!emailError}
+                helperText={emailError}
+                onChange={onEmailChange}
+              />
+            )}
             <div>
               <Button variant="contained" disabled={isSocial} onClick={changeEmail}>
                 {formatMessage({ id: 'change_email_title' })}
