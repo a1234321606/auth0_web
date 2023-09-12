@@ -37,14 +37,13 @@ export default ({ menuConfig }: IProps) => {
   }, [username]);
 
   useEffect(() => {
-    if (target) {
+    if (!anchorEl) {
       if (target === formatMessage({ id: 'menu_profile' })) navigate('/profile');
       else if (target === formatMessage({ id: 'menu_logout' })) {
         logout({ logoutParams: { returnTo: window.location.origin } });
       }
-      setTarget(null);
     }
-  }, [target]);
+  }, [anchorEl]);
 
   return (
     <AppBar position="relative" style={{ flexDirection: 'row', alignItems: 'center', padding: '0 24px' }}>
