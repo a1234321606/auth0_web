@@ -18,24 +18,33 @@ interface IProps {
 }
 
 export default ({ menuConfig }: IProps) => {
-  const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>();
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>();
+  const [target, setTarget] = useState<string | null>();
   const [avatarAlt, setAvatarAlt] = useState<string>();
   const { username, auth0: { user, logout } } = useAppSelector((state) => state.authReducer);
   const navigate = useNavigate();
   const { formatMessage } = useIntl();
 
-  const onAvatarClick = (event: React.MouseEvent<HTMLButtonElement>) => setAnchorElUser(event.currentTarget);
+  const onAvatarClick = (event: React.MouseEvent<HTMLButtonElement>) => setAnchorEl(event.currentTarget);
 
   const onAvatarClose = (item: string) => {
-    setAnchorElUser(null);
-    if (item === formatMessage({ id: 'menu_profile' })) setTimeout(() => navigate('/profile'), 100);
-    else if (item === formatMessage({ id: 'menu_logout' })) logout({ logoutParams: { returnTo: window.location.origin } });
-    setTimeout(() => setAnchorElUser(null), 2000); // Fix unexptected menu close failed only happens on Render
+    setAnchorEl(null);
+    setTarget(item);
   };
 
   useEffect(() => {
     setAvatarAlt(username.split(' ').map((s: string) => s[0]).join('').toUpperCase());
   }, [username]);
+
+  useEffect(() => {
+    if (target) {
+      if (target === formatMessage({ id: 'menu_profile' })) navigate('/profile');
+      else if (target === formatMessage({ id: 'menu_logout' })) {
+        logout({ logoutParams: { returnTo: window.location.origin } });
+      }
+      setTarget(null);
+    }
+  }, [target]);
 
   return (
     <AppBar position="relative" style={{ flexDirection: 'row', alignItems: 'center', padding: '0 24px' }}>
@@ -57,22 +66,17 @@ export default ({ menuConfig }: IProps) => {
           <Avatar src={user?.sub.startsWith('auth0') ? avatarAlt : user?.picture}>{avatarAlt}</Avatar>
         </IconButton>
         <Menu
-          anchorEl={anchorElUser}
+          anchorEl={anchorEl}
           anchorOrigin={{
             vertical: 'bottom',
             horizontal: 'right',
           }}
-          open={Boolean(anchorElUser)}
+          open={Boolean(anchorEl)}
           onClose={onAvatarClose}
         >
           {[formatMessage({ id: 'menu_profile' }), formatMessage({ id: 'menu_logout' })]
-            .map((setting) => (
-              <MenuItem
-                key={setting}
-                onClick={() => onAvatarClose(setting)}
-              >
-                {setting}
-              </MenuItem>
+            .map((label) => (
+              <MenuItem key={label} onClick={() => onAvatarClose(label)}>{label}</MenuItem>
             ))}
         </Menu>
       </div>
